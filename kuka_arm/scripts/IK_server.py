@@ -67,17 +67,20 @@ cos_law = lambda a, b, c: (a**2 + b**2 - c**2) / (2 * a * b)
 #############          DEFINE GENERIC COORDINATE ROTATION MATRICES         #############
 ########################################################################################
 def URDF2DH(r, p, y):
-	URDF2DH_ROT_X = Matrix([[      1,           0,          0 ],
-							[      0,      cos(r),    -sin(r) ],
-							[      0,      sin(r),     cos(r) ]])
+	URDF2DH_ROT_X = Matrix([
+		[      1,           0,          0 ],
+		[      0,      cos(r),    -sin(r) ],
+		[      0,      sin(r),     cos(r) ]])
 
-	URDF2DH_ROT_Y = Matrix([[ cos(p),           0,     sin(p) ],
-							[      0,           1,          0 ],
-							[-sin(p),           0,     cos(p) ]])
+	URDF2DH_ROT_Y = Matrix([
+		[ cos(p),           0,     sin(p) ],
+		[      0,           1,          0 ],
+		[-sin(p),           0,     cos(p) ]])
 
-	URDF2DH_ROT_Z = Matrix([[ cos(y),     -sin(y),          0 ],
-							[ sin(y),      cos(y),          0 ],
-							[      0,           0,          1 ]])
+	URDF2DH_ROT_Z = Matrix([
+		[ cos(y),     -sin(y),          0 ],
+		[ sin(y),      cos(y),          0 ],
+		[      0,           0,          1 ]])
 	return URDF2DH_ROT_X, URDF2DH_ROT_Y, URDF2DH_ROT_Z
 
 ########################################################################################
@@ -88,8 +91,7 @@ def TF_MATRIX(alpha, a, d, q):
 		[            cos(q),             -sin(q),            0,               a],
 		[ sin(q)*cos(alpha),   cos(q)*cos(alpha),  -sin(alpha),   -sin(alpha)*d],
 		[ sin(q)*sin(alpha),   cos(q)*sin(alpha),   cos(alpha),    cos(alpha)*d],
-		[                 0,                   0,            0,               1]
-		])
+		[                 0,                   0,            0,               1]])
 	return TF_MAT
 
 
@@ -209,9 +211,10 @@ def inverse_kinematics(pos, ori, R3_0):
 
 	R0_6 = ROT_EE   
 
-	EE2WC_TRANSLATION = Matrix([[0],
-								[0],
-								[DH_TABLE[d7]]])
+	EE2WC_TRANSLATION = Matrix([
+		[0],
+		[0],
+		[DH_TABLE[d7]]])
 
 	WC = EE - R0_6*EE2WC_TRANSLATION 			# Wrist Center w.r.t. Base Link
 
