@@ -59,7 +59,7 @@ Since the last three joints in our Kuka KR210 robot are revolute and their joint
 
 Our first goal is to setup our environment properly. Then explore the forward kinematics with Kuka KR210 to learn more about the robot's geometry and derive DH parameters. Once we have the DH parameters, we will run the complete pick and place project in demo mode to get an understanding of the complete project scenario.
 
-Next we will perform kinematic analysis of the robot and derive equations for individual joint angles. In addition, we will write the actual Inverse Kinematics code inside of `IK_server.py` file. The general Inverse Kinematics content can be found [here](https://classroom.udacity.com/nanodegrees/nd209/parts/c199593e-1e9a-4830-8e29-2c86f70f489e/modules/8855de3f-2897-46c3-a805-628b5ecf045b/lessons/87c52cd9-09ba-4414-bc30-24ae18277d24/concepts/3bc41e14-e43d-4105-887c-8268a7402750) or a quick recap [here](https://classroom.udacity.com/nanodegrees/nd209/parts/c199593e-1e9a-4830-8e29-2c86f70f489e/modules/8855de3f-2897-46c3-a805-628b5ecf045b/lessons/91d017b1-4493-4522-ad52-04a74a01094c/concepts/a1abb738-84ee-48b1-82d7-ace881b5aec0). 
+Next we will perform kinematic analysis of the robot and derive equations for individual joint angles. In addition, we will write the actual Inverse Kinematics code inside of `IK_server.py` file. 
 
 ![alt text][image1]
 
@@ -502,16 +502,16 @@ The angle theta-1 is the angle in the x-y plane, made by the projection of the w
 
 ![alt text][image32]
 
-Now we calculate wrist center on projected X0-Y0 plane (xc, yc) from joint-2. Here, xc is the component in X0 direction minus link-offset from joint-2 (a1) and yc is the component in Z0 direction minus link-length from joint-2
+Now we calculate wrist center on projected Xwc-Ywc plane (r, S) from joint-2. Here, r is the component in Xwc direction minus link-offset from joint-2 (a1) and S is the component in Ywc direction minus link-length from joint-2 as shown above.
 
 ```python
-xc = sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - DH_TABLE[a1]
-yc = WC[2] - DH_TABLE[d1]
+r = sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - DH_TABLE[a1]
+S = WC[2] - DH_TABLE[d1]
 ```
 
 In joint-2's zero configuration, the angle made by the wrist center about joint-2's z-axis is computed as below:
 ```python
-alpha = atan2(yc, xc)
+alpha = atan2(r, S)
 ``` 
 The angle between joint-2 and joint-5 due to the geometry of the link-design is:
 ```python
@@ -526,7 +526,7 @@ The sides of the above triagle are the distances between joints 2, 3, and 5 cons
 ```python
 d2_3 = DH_TABLE[a2]                               			# distance between joint-2 to joint-3
 d3_5 = sqrt(DH_TABLE[a3]*DH_TABLE[a3] + DH_TABLE[d4]*DH_TABLE[d4])    	# distance between joint-3 to joint-5/WC
-d2_5 = sqrt( xc*xc + yc*yc )                     			# distance between joint-2 to joint-5/WC 
+d2_5 = sqrt( r*r + S*S )                     				# distance between joint-2 to joint-5/WC 
 ```
 
 Given the lengths of the sides of the triangle, the angles can be computed using the cosine law. The angle between sides a and b can be found using the formula, cos(theta) = (a^2 + b^2 - c^2) / 2a*b.
