@@ -309,6 +309,7 @@ Reference frames in URDF coordinate can be seen in the figure below
 ![alt text][image8]
 
 The DH-table consisting of parameter values for Kuka KR210 are as shown below.
+
 | Links | i   | alpha(i-1) | a(i-1) | d(i-1) | theta(i)  |
 | :-----|:---:| ----------:| ------:| ------:| ---------:|
 | 0->1  | 1   |      0     |      0 |   0.75 |         q1|
