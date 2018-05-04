@@ -47,6 +47,8 @@
 [image41]: ./output/RMSE_Error_Loc4_2.png
 [image42]: ./output/RMSE_Error_Loc7_1.png
 [image43]: ./output/RMSE_Error_Loc7_2.png
+[image44]: ./output/FK_Transformation_Matrices.JPG
+[image45]: ./output/IK_Analysis.JPG
 [video01]: ./output/Kuka_Robotic_Arm_Project_Video_4p4.mov
 
 # Project: Kinematics Pick & Place
@@ -367,6 +369,9 @@ T2_3 = TF_MATRIX(alpha2, a2, d3, q3).subs(DH_TABLE)
 ...
 ```
 
+After substituting the DH-parameters in the above TF_MATRIX() function, the individual transformation matrices are as below
+![alt text][image44]
+
 #### 2.3.2 Compositions of the transformation matrices
 The composition matrices are evaluated by multiplying the matrices in the desired order as shown here.
 ```python
@@ -505,21 +510,20 @@ WC = EE - DH_TABLE[d7]*URDF2DH_ROT_EE[:,2]
 ### 3.2 Evaluate theta-1, theta-2 and theta-3
 Since we have a decoupled system, using the position of the wrist-center, and DH parameter values, we will first evaluate the theta-1, theta-2, and theta-3 values. 
 
-The angle theta-1 is the angle in the x-y plane, made by the projection of the wrist center (WC) onto the x-y plane in base-frame coordinate system. 
-
-![alt text][image32]
-
-Now we calculate wrist center on projected Xwc-Ywc plane (r, S) from joint-2. Here, r is the component in Xwc direction minus link-offset from joint-2 (a1) and S is the component in Ywc direction minus link-length from joint-2 as shown above.
+The angle theta-1 is the angle in the x-y plane, made by the projection of the wrist center (WC) onto the x-y plane in base-frame coordinate system. Now we calculate wrist center on projected Xwc-Ywc plane (y2, x2) from joint-2. Here, r is the component in Xwc direction minus link-offset from joint-2 (a1) and S is the component in Ywc direction minus link-length from joint-2 as shown above.
 
 ```python
-r = sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - DH_TABLE[a1]
-S = WC[2] - DH_TABLE[d1]
+y2 = sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - DH_TABLE[a1]
+x2 = WC[2] - DH_TABLE[d1]
 ```
 
 In joint-2's zero configuration, the angle made by the wrist center about joint-2's z-axis is computed as below:
 ```python
-alpha = atan2(r, S)
+alpha = atan2(x2, y2)
 ``` 
+The figure below shows the detailed calculations with the geometry of the arm (note: there is a typo in the alpha computation, it should be tan_inv(x2/y2) as shown in the above code snippet). 
+![alt text][image45]
+
 The angle between joint-2 and joint-5 due to the geometry of the link-design is:
 ```python
 beta = abs(atan2(DH_TABLE[a3], DH_TABLE[d4]))	
@@ -601,7 +605,7 @@ else:
 	theta4 = atan2(R3_6[2,2], -R3_6[0,2]).evalf() 
 	theta6 = atan2(-R3_6[1,1], R3_6[1,0]).evalf() 
 ```
-
+We can see from section 3.3, that R3_6 elements (R3_6[2,2], R3_6[0,2], R3_6[1,1] and R3_6[1,0]) used to compute theta-4 and theta-6 change signs depending on whether theta-5 is in quadrant 1-2 or quadrants 3-4. Since the function atan2 finds the angles corresponding to the desired quadrant, the signs of the arguments to the atan2 function must be adjusted to reflect the accuracy in the computation so as to orient the end effector is the right direction. 
 
 ## 4. Results
 Some screen shots of the pick and place operations are shown below.  The target (the blue cylinder) was on the 7th slot of the self (i.e. `spawn_location = 7` in the `target_description.launch` file). 
