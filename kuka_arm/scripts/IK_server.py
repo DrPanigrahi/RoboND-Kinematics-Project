@@ -84,10 +84,12 @@ def URDF2DH(r, p, y):
 #############           DEFINE HOMOGENEOUS TRANSFORMATION MATRIX           #############
 ########################################################################################
 def TF_MATRIX(alpha, a, d, q):
-	TF_MAT = Matrix([[   cos(q),             -sin(q),            0,               a],
-			[ sin(q)*cos(alpha),   cos(q)*cos(alpha),  -sin(alpha),   -sin(alpha)*d],
-			[ sin(q)*sin(alpha),   cos(q)*sin(alpha),   cos(alpha),    cos(alpha)*d],
-			[                 0,                   0,            0,               1]])
+	TF_MAT = Matrix([
+		[            cos(q),             -sin(q),            0,               a],
+		[ sin(q)*cos(alpha),   cos(q)*cos(alpha),  -sin(alpha),   -sin(alpha)*d],
+		[ sin(q)*sin(alpha),   cos(q)*sin(alpha),   cos(alpha),    cos(alpha)*d],
+		[                 0,                   0,            0,               1]
+		])
 	return TF_MAT
 
 
