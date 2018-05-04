@@ -299,11 +299,18 @@ Once all these items are confirmed, open rviz window, hit Next button. To view t
 
 ## 2 Forward Kinematic Analysis
 ### 2.1 Define DH Parameters
-We will use the Denavit-Hartenberg (DH) notations to define our parameters for the link lengths (d1 to d7), link offsets (a0 to a6), twist angles (alpha0 to alpha6), and joint angles (q1 to q7). The KUka KR210 in its zero configuration is shown below.'
+We will use the Denavit-Hartenberg (DH) notations to define our parameters for the link lengths (d1 to d7), link offsets (a0 to a6), twist angles (alpha0 to alpha6), and joint angles (q1 to q7). The KUka KR210 in its zero configuration is shown below. 
+
+d(i)       : link lengths - the distance between joint(i-1) and joint(i) along z(i) axis.
+a(i-1)     : link offsets - the distance between joint(i-1) and joint(i) along x(i) axis.
+alpha(i-1) : twist angles - the angle between the axes z(i-1) and z(i).
+q(i)       : joint angles - the angle made by the rotation of joint(i) about the z(i) axis.
 
 ![alt text][image7]
 
-Reference frames in URDF coordinate can be seen in the figure below
+
+The geometry of the Kuka KR210 serial manipulator can be found from the URDF file that describes
+the dimensions of the links and properties of the joints. The modified DH parameters can be found from this URDF file as shown in the example below. Reference frames in URDF coordinate can be seen in the figure below
 
 ![alt text][image8]
 
