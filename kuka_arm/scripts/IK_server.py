@@ -84,10 +84,10 @@ def URDF2DH(r, p, y):
 #############           DEFINE HOMOGENEOUS TRANSFORMATION MATRIX           #############
 ########################################################################################
 def TF_MATRIX(alpha, a, d, q):
-	TF_MAT = Matrix([[            cos(q),             -sin(q),            0,                a],
-					 [ sin(q)*cos(alpha),	cos(q)*cos(alpha),	-sin(alpha),	-sin(alpha)*d],
-					 [ sin(q)*sin(alpha),   cos(q)*sin(alpha),   cos(alpha),     cos(alpha)*d],
-					 [                 0,                   0,            0,                1]])
+	TF_MAT = Matrix([[       cos(q),             -sin(q),            0,                a],
+				[ sin(q)*cos(alpha),   cos(q)*cos(alpha),	-sin(alpha),   -sin(alpha)*d],
+				[ sin(q)*sin(alpha),   cos(q)*sin(alpha),   cos(alpha),     cos(alpha)*d],
+				[                 0,                   0,            0,                1]])
 	return TF_MAT
 
 
@@ -143,12 +143,6 @@ def forward_kinematics():
 	########################################################
 	################## ROTATION MATRICES ###################
 	########################################################
-	# R0_1 = T0_1[0:3, 0:3]        	# base_link to link-1
-	# R0_2 = R0_1 * T1_2[0:3, 0:3] 	# base_link to link-2
-	# R0_3 = R0_2 * T2_3[0:3, 0:3] 	# base_link to link-3
-	# R0_4 = R0_3 * T3_4[0:3, 0:3] 	# base_link to link-4
-	# R0_5 = R0_4 * T4_5[0:3, 0:3] 	# base_link to link-5
-	# R0_6 = R0_5 * T5_6[0:3, 0:3] 	# base_link to link-6
 	R0_3 = T0_1[0:3, 0:3]*T1_2[0:3, 0:3]*T2_3[0:3, 0:3]  #R3_6 = R3_4*R4_5*R5_6
 	R3_6 = T3_4[0:3, 0:3]*T4_5[0:3, 0:3]*T5_6[0:3, 0:3]  #R3_6 = R3_4*R4_5*R5_6
 	# print("R3_6 = ", R3_6)
@@ -211,14 +205,12 @@ def inverse_kinematics(pos, ori, R3_0):
 	ROT_EE = ROT_EE * URDF2DH_EE_ROT_CORRECTION
 	ROT_EE = ROT_EE.subs({'r': ori[0], 'p': ori[1], 'y': ori[2]})
 
-	R0_6 = ROT_EE   # The Gripper link is rigidly connected to Link-6 >> q7=0 >> R6_EE = I
-					# ROT_EE = R0_EE = R0_6*R6_EE = R0_6*I = R0_6
+	R0_6 = ROT_EE   
 
 	EE2WC_TRANSLATION = Matrix([[0],
 								[0],
 								[DH_TABLE[d7]]])
 
-	#WC = EE - DH_TABLE[d7]*URDF2DH_ROT_EE[:,2] # Wrist Center w.r.t. Base Link
 	WC = EE - R0_6*EE2WC_TRANSLATION 			# Wrist Center w.r.t. Base Link
 
 	print("WC = ", WC)
@@ -238,10 +230,7 @@ def inverse_kinematics(pos, ori, R3_0):
 	d2_5 = sqrt( xc**2 + yc**2 )                      # distance between joint-2 to joint-5/WC 
 
 	alpha = atan2(yc, xc)
-	#beta = atan2(-DH_TABLE[a3], DH_TABLE[d4])
 	beta = abs(atan2(DH_TABLE[a3], DH_TABLE[d4]))
-	#beta = atan2(-DH_TABLE[a3], sqrt(DH_TABLE[d4]**2 - DH_TABLE[a3]**2))
-	
 	
 	cos_a = cos_law(d2_5, d2_3, d3_5)
 	cos_b = cos_law(d2_3, d3_5, d2_5)
