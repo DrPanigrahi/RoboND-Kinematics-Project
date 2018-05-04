@@ -703,8 +703,7 @@ Another example of the inverse kinematics error is below for `spawn location = 7
 ![alt text][image43]
 
 ### 4.3 Output Video
-An output video created by screen recording can be found in the output folder.
-![alt text][video01]
+I have made a screen recording of one of the pick and place operations. This output video recording can be found ![here][video01] in the  output folder.
 
 ## 5. Issues and Comments
 * Most of the times the picking of the blue cylinder works well.  However, I have noticed in several runs that even though the gripper is in the right pose and orientation while grabbing the blue cylinder, the cylinder slips off the gripper either during the pick-up operation or during the operation. It would have been better if the grasping part was also covered in the classroom.  It took me quite some time to figure out how to modify the grasping parameters as discueed in the Results section above. 
