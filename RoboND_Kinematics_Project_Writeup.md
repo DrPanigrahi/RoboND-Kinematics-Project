@@ -102,20 +102,21 @@ We will need Python 2 and ROS installation for this project. For this, we will u
 
 
 ### 1.1 ROS Installation Steps for Ubuntu
-#### 1.1.1 Setup your sources.list
-Setup your computer to accept software from packages.ros.org.
+The detailed instructions on how to install ROS Kinetic and other dependencies can be found [here](http://wiki.ros.org/kinetic/Installation/Ubuntu)
+#### Setup your sources.list
+Setup your computer to accept software from packages.ros.org.  
 ```sh
 $ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 ```
 
-#### 1.1.2 Set up your keys
+#### Set up your keys
 ```sh
 $ sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 ```
 
 If you experience issues connecting to the keyserver, you can try substituting hkp://pgp.mit.edu:80 or hkp://keyserver.ubuntu.com:80 in the previous command.
 
-#### 1.1.3 Installation
+#### Installation
 First, make sure your Debian package index is up-to-date:
 ```sh
 $ sudo apt-get update
@@ -151,14 +152,14 @@ e.g.
 $ sudo apt-get install ros-kinetic-slam-gmapping
 ```
 
-#### 1.1.4 Initialize rosdep
+#### Initialize rosdep
 Before we can use ROS, you will need to initialize rosdep. rosdep enables you to easily install system dependencies for source you want to compile and is required to run some core components in ROS.
 ```sh
 $ sudo rosdep init
 $ rosdep update
 ```
 
-#### 1.1.5 Environment setup
+#### Environment setup
 It's convenient if the ROS environment variables are automatically added to your bash session every time a new shell is launched:
 ```sh
 $ echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
@@ -177,7 +178,7 @@ $ echo "source /opt/ros/kinetic/setup.zsh" >> ~/.zshrc
 $ source ~/.zshrc
 ```
 
-#### 1.1.6 Dependencies for building packages
+#### Dependencies for building packages
 Up to now you have installed what you need to run the core ROS packages. To create and manage your own ROS workspaces, there are various tools and requirements that are distributed separately. For example, rosinstall is a frequently used command-line tool that enables you to easily download many source trees for ROS packages with one command.
 
 To install this tool and other dependencies for building ROS packages, run:
@@ -207,7 +208,7 @@ $ gazebo --version
 
 ### 1.3 Create ROS Workspace and Compile ROS Package
 
-#### 1.3.1 Setup ROS workspace and Update Dependencies
+#### Setup ROS workspace and Update Dependencies
 For the rest of this setup, catkin_ws is the name of active ROS Workspace, if your workspace name is different, change the commands accordingly. If you do not have an active ROS workspace, you can create one by:
 ```sh
 $ mkdir -p ~/catkin_ws/src
@@ -264,7 +265,7 @@ $ export GAZEBO_MODEL_PATH=~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/mo
 $ source ~/catkin_ws/devel/setup.bash
 ```
 
-#### 1.3.2 Launch the Kuka KR210 Project Demo
+#### Launch the Kuka KR210 Project Demo
 For demo mode make sure the **demo** flag is set to _"true"_ in `inverse_kinematics.launch` file under ~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/launch
 
 In addition, you can also control the spawn location of the target object in the shelf. To do this, modify the **spawn_location** argument in `target_description.launch` file under ~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/launch. 0-9 are valid values for spawn_location with 0 being random mode.
@@ -297,7 +298,7 @@ and the following in the rviz world:
 
 Once all these items are confirmed, open rviz window, hit Next button. To view the complete demo keep hitting Next after previous action is completed successfully or hit Continue once to perform all actions in series. Since debugging is enabled, you should be able to see diagnostic output on various terminals that have popped up. The demo ends when the robot arm reaches at the top of the drop location.  In case the demo fails, close all three terminal windows and rerun the script.
 
-## 2 Forward Kinamatic Analysis
+## 2 Forward Kinematic Analysis
 ### 2.1 Define DH Parameters
 We will use the Denavit-Hartenberg (DH) notations to define our parameters for the link lengths (d1 to d7), link offsets (a0 to a6), twist angles (alpha0 to alpha6), and joint angles (q1 to q7). The KUka KR210 in its zero configuration is shown below.'
 
@@ -308,15 +309,15 @@ Reference frames in URDF coordinate can be seen in the figure below
 ![alt text][image8]
 
 The DH-table consisting of parameter values for Kuka KR210 are as shown below.
-Links | i | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
---- | --- | --- | --- | --- | ---
-0->1  | 1 | 	 0 |      0 |  0.75 |         q1
-1->2  | 2 | - pi/2 |   0.35 |     0 | -pi/2 + q2
-2->3  | 3 | 	 0 |   1.25 |     0 |         q3
-3->4  | 4 | - pi/2 | -0.054 |   1.5 | 	      q4
-4->5  | 5 |   pi/2 |      0 |     0 | 	      q5
-5->6  | 6 | - pi/2 |      0 |     0 | 	      q6
-6->EE | 7 |	 0 |      0 | 0.303 | 	       0
+| Links | i   | alpha(i-1) | a(i-1) | d(i-1) | theta(i)  |
+| :-----|:---:| ----------:| ------:| ------:| ---------:|
+| 0->1  | 1   |      0     |      0 |   0.75 |         q1|
+| 1->2  | 2   | - pi/2     |   0.35 |      0 | -pi/2 + q2|
+| 2->3  | 3   |      0     |   1.25 |      0 |         q3|
+| 3->4  | 4   | - pi/2     | -0.054 |    1.5 |         q4|
+| 4->5  | 5   |   pi/2     |      0 |      0 |         q5|
+| 5->6  | 6   | - pi/2     |      0 |      0 |         q6|
+| 6->EE | 7   |      0     |      0 |  0.303 |          0|
 
 ```python
 DH_TABLE = {alpha0:     0,  a0:      0,  d1:  0.75,  q1:       q1, 
@@ -350,7 +351,7 @@ def TF_MATRIX(alpha, a, d, q):
 ### 2.3 Evaluate Transformation Matrices
 Evaluate the transformation matrices and their compositions by substituting the DH parameters into the transformation matrices as shown here.
 
-#### 2.3.1 Transformation matrix computation
+#### Transformation matrix computation
 Individual transformation matrices are evalunated by substituting the parameters defined in the DH_TABLE. 
 ```python
 T0_1 = TF_MATRIX(alpha0, a0, d1, q1).subs(DH_TABLE)
@@ -359,7 +360,7 @@ T2_3 = TF_MATRIX(alpha2, a2, d3, q3).subs(DH_TABLE)
 ...
 ```
 
-#### 2.3.2 Composition of the transformation matrices
+#### Composition of the transformation matrices
 The composition matrices are evaluated by multiplying the matrices in the desired order as shown here.
 ```python
 T0_2 = T0_1 * T1_2 				# base_link to link-2
@@ -367,24 +368,24 @@ T0_3 = T0_2 * T2_3 				# base_link to link-3
 ...
 ```
 
-#### 2.3.3 Evaluate end-effector position and orientation (T0_EE) with respect to base link
+#### Evaluate end-effector position and orientation (T0_EE) with respect to base link
 The total composition matrix provides the rotation and orientation of the end-effector with respect to the base link.
 ```python
 T0_EE = T0_1 * T1_2 * T2_3 * T3_4 * T4_5 * T5_6 * T6_EE
 ```
 
-#### 2.3.4 Extract rotation transformation (R0_3) from joint 0 to joint 3
+#### Extract rotation transformation (R0_3) from joint 0 to joint 3
 The rotation of joint 3 with respect to the base link can be found from the composition of the rotation components of the transformation matrices as shown below.
 ```python
 R0_3 = T0_1[0:3, 0:3]*T1_2[0:3, 0:3]*T2_3[0:3, 0:3]  #R3_6 = R3_4*R4_5*R5_6
 ```
 
-#### 2.3.5 Evaluate inverse rotation transformation (R3_0) of the rotation matrix R0_3
+#### Evaluate inverse rotation transformation (R3_0) of the rotation matrix R0_3
 Since the rotation matrix symmetric, the inverse is equal to the transpose of the matrix.
 ```python
 R3_0 = R0_3.transpose()
 ```
-#### 2.3.6 Examples of end-effector position and orientation computation
+#### Examples of end-effector position and orientation computation
 Various example of the end-effector position and and orientation computations shown below. 
 Evaluate the end-effector position of the robot manipulator in its zero configuration
 ```python
@@ -647,14 +648,14 @@ bool TrajectorySampler::OperateGripper(const bool &close_gripper)
 **Errors in End-Effector Position Estimation**
 I have performed an error analysis to compute the root-mean-squared-error (RMSE) for the gripper/end-effector position estimation from the inverse kinematics as discussed here.
 
-* Evaluate estimated end-effector position using the joint angles computed in the Inverse Kinematics step. 
+##### Evaluate estimated end-effector position using the joint angles computed in the Inverse Kinematics step. 
 ```python
 EE_POS = np.array((px, py, pz), np.float64)
 T0_EE_EST = T0_EE.evalf(subs={q1: theta1, q2: theta2, q3: theta3, q4: theta4, q5: theta5, q6: theta6})
 EE_POS_EST = np.array((T0_EE_EST[0,3], T0_EE_EST[1,3], T0_EE_EST[2,3]), np.float64)
 
 ```
-* Evaluate root-mean-squared-error (RMSE) of the estimated end-effector position w.r.t. the known end-effector position. The class for the RMSE computations is shown here:
+##### Evaluate root-mean-squared-error (RMSE) of the estimated end-effector position w.r.t. the known end-effector position. The class for the RMSE computations is shown here:
 ```python
 class RMSE:
 	def __init__(self):
@@ -684,7 +685,7 @@ print ("END-EFFECTOR ERROR:", RMSE_EE.getError())
 RMSE_EE_MAT[i,:] = RMSE_EE.getError() 
 ```
 
-* Plot the error in end-effector pose generated by the joint angle commands from the inverse kinematics.
+##### Plot the error in end-effector pose generated by the joint angle commands from the inverse kinematics.
 ```python
 plt.plot(RMSE_EE_MAT) # plot RMSE errors by (X, Y, Z) columns
 plt.show()
@@ -701,7 +702,6 @@ Another example of the inverse kinematics error is below for `spawn location = 7
 
 ### 4.3 Output Video
 An output video created by screen recording can be found in the output folder.
-
 ![alt text][video01]
 
 ## 5. Issues
