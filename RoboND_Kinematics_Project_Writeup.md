@@ -527,18 +527,14 @@ The angle between joint-2 and joint-5 due to the geometry of the link-design is:
 beta = abs(atan2(DH_TABLE[a3], DH_TABLE[d4]))	
 ```
 
-For angle theta-2 and theta-3, we will use the cosine law for the triangle shown below.
-
-![alt text][image33]
-
-The sides of the above triagle are the distances between joints 2, 3, and 5 considering the coordinates of the joint-4 and joint-6 to coincide with the coordinate of the joint-5. 
+For angle theta-2 and theta-3, we will use the cosine law for the triangle shown above. The sides of the above triagle are the distances between joints 2, 3, and 5 considering the coordinates of the joint-4 and joint-6 to coincide with the coordinate of the joint-5. 
 ```python
 d2_3 = DH_TABLE[a2]                               			# distance between joint-2 to joint-3
 d3_5 = sqrt(DH_TABLE[a3]*DH_TABLE[a3] + DH_TABLE[d4]*DH_TABLE[d4])    	# distance between joint-3 to joint-5/WC
 d2_5 = sqrt( r*r + S*S )                     				# distance between joint-2 to joint-5/WC 
 ```
 
-Given the lengths of the sides of the triangle, the angles can be computed using the cosine law. The angle between sides a and b can be found using the formula, cos(theta) = (a^2 + b^2 - c^2) / 2a*b.
+Given the lengths of the sides of the triangle, the angles can be computed using the cosine law. The angle between sides a and b can be found using the formula, cos(phi) = (a^2 + b^2 - c^2) / 2a*b.
 
 Here is how I have implented the cosine law
 ```python
