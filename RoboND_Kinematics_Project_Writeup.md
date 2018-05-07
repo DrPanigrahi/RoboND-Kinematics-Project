@@ -48,7 +48,7 @@
 [image42]: ./output/RMSE_Error_Loc7_1.png
 [image43]: ./output/RMSE_Error_Loc7_2.png
 [image44]: ./output/FK_Transformation_Matrices.JPG
-[image45]: ./output/IK_Analysis.JPG
+[image45]: ./output/INVERSE_KINEMATICS_THETA123_FIGURE_EQUATIONS.png
 [video01]: ./output/Kuka_Robotic_Arm_Project_Video_4p4.mov
 
 # Project: Kinematics Pick & Place
@@ -508,9 +508,7 @@ WC = EE - DH_TABLE[d7]*URDF2DH_ROT_EE[:,2]
 ```
 
 ### 3.2 Evaluate theta-1, theta-2 and theta-3
-Since we have a decoupled system, using the position of the wrist-center, and DH parameter values, we will first evaluate the theta-1, theta-2, and theta-3 values. 
-
-The angle theta-1 is the angle in the x-y plane, made by the projection of the wrist center (WC) onto the x-y plane in base-frame coordinate system. Now we calculate wrist center on projected Xwc-Ywc plane (y2, x2) from joint-2. Here, r is the component in Xwc direction minus link-offset from joint-2 (a1) and S is the component in Ywc direction minus link-length from joint-2 as shown above.
+Since we have a decoupled system, using the position of the wrist-center, and DH parameter values, we will first evaluate the theta-1, theta-2, and theta-3 values. The angle theta-1 is the angle in the x-y plane, made by the projection of the wrist center (WC) onto the x-y plane in base-frame coordinate system. Angle theta-2 is the angle of rotation of the joint-2 from its zero configuration about Z2 axis.  Theta-3 is the angle of rotation of the joint-3 from its zero configuration about Z3 axis.
 
 ```python
 y2 = sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - DH_TABLE[a1]
@@ -521,7 +519,7 @@ In joint-2's zero configuration, the angle made by the wrist center about joint-
 ```python
 alpha = atan2(x2, y2)
 ``` 
-The figure below shows the detailed calculations with the geometry of the arm (note: there is a typo in the alpha computation, it should be tan_inv(x2/y2) as shown in the above code snippet). 
+The figure below shows the detailed calculations of theta-1, theta-2, and theta-3 with the geometry of the arms. 
 ![alt text][image45]
 
 The angle between joint-2 and joint-5 due to the geometry of the link-design is:
