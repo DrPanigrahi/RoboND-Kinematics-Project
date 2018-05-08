@@ -48,7 +48,7 @@
 [image42]: ./output/RMSE_Error_Loc7_1.png
 [image43]: ./output/RMSE_Error_Loc7_2.png
 [image44]: ./output/FK_Transformation_Matrices.JPG
-[image45]: ./output/INVERSE_KINEMATICS_THETA123_FIGURE_EQUATIONS.png
+[image45]: ./output/IK_THETA123_FIGURE_EQUATIONS.png
 [video01]: ./output/Kuka_Robotic_Arm_Project_Video_4p4.mov
 
 # Project: Kinematics Pick & Place
@@ -519,7 +519,7 @@ In joint-2's zero configuration, the angle made by the wrist center about joint-
 ```python
 alpha = atan2(x2, y2)
 ``` 
-The figure below shows the detailed calculations of theta-1, theta-2, and theta-3 with the geometry of the arms. 
+The figure below shows the detailed calculations of theta-1, theta-2, and theta-3 using the geometry of the arms. 
 ![alt text][image45]
 
 The angle between joint-2 and joint-5 due to the geometry of the link-design is:
