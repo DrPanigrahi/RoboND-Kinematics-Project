@@ -70,9 +70,7 @@ Next we will perform kinematic analysis of the robot and derive equations for in
 
 * Setup ROS Workspace.
 * Download or clone the [project repository](https://github.com/udacity/RoboND-Kinematics-Project) into the src directory of your ROS Workspace.
-* Experiment with the forward_kinematics environment and get familiar with the robot.
-* Launch the pick and place demo to get familiar with various steps in the project.
-* Perform forward and inverse kinematic analysis for the robot following the [project rubric](https://review.udacity.com/#!/rubrics/972/view) along with a proper writeup. Use the `IK_debug.py` to perform initial analysis on the forward kinematics.
+* Perform forward and inverse kinematic analysis for the robot. Use the `IK_debug.py` to perform initial analysis on the forward kinematics.
 * Fill in the `IK_server.py` with Forward Kinematics (FK) and Inverse Kinematics (IK) code. 
 
 **Forward Kinematics**
@@ -723,7 +721,7 @@ I have made a screen recording of one of the pick and place operations. This out
 
 
 ## 6. Possible Optimizations
-* The arms move around quite bit to put quite a performance for some operations that are farther from the trash-bin, i.e. for spawn loacations 3, 6, and 9.  It would have been great if some optimization techniques was covered during the lessons. Hopefully there are more lessons in the future that covers some optimization aspects for pick and place type operations based on the distance from the object.
+* The arms moves around to put quite a performance for some operations that are farther from the trash-bin, i.e. for spawn loacations 3, 6, and 9.  It would have been great if some optimization techniques was covered during the lessons. Hopefully there are more lessons in the future that covers some optimization aspects for pick and place type operations based on the distance from the object.
 
 * More optimization of the code needed for the wrist to stop unnecessary rotations of between pi and 2*pi.
 
