@@ -330,6 +330,45 @@ Check gazebo version
 ```sh
 gazebo --version
 ```
+After this run the following:
+```sh
+$ cd ~/catkin_ws
+$ catkin_make
+```
+However, if you get errors such as 
+```sh
+CMake Error at /opt/ros/kinetic/share/catkin/cmake/catkinConfig.cmake:83 (find_package):
+Could not find the required component 'moveit_visual_tools'
+Could not find a package configuration file provided by "moveit_visual_tools"
+with any of the following names:
+
+moveit_visual_toolsConfig.cmake
+moveit_visual_tools-config.cmake
+```
+then the following should help fix the errors. For more details see Ros Wiki here [here] (http://wiki.ros.org/hydro/Installation/Source)
+Install bootstrap dependencies (Ubuntu):
+```sh
+$ sudo apt-get install python-rosdep python-rosinstall-generator python-wstool python-rosinstall build-essential
+```
+Initialize rosdep
+```sh
+$ sudo rosdep init
+$ rosdep update
+```
+Build the catkin Packages (ROS, rqt, rviz, and robot-generic libraries)
+```sh
+$ cd ~/catkin_ws
+$ rosinstall_generator desktop --rosdistro kinetic --deps --wet-only --tar > kinetic-desktop-wet.rosinstall
+$ wstool init -j8 src kinetic-desktop-wet.rosinstall
+```
+Resolve dependencies
+```sh
+$ rosdep install --from-paths src --ignore-src --rosdistro kinetic -y
+```
+Build the catkin Workspace
+```sh
+$ ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
+```
 
 
 ### 1.3 Create ROS Workspace and Compile ROS Package
