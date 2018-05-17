@@ -188,16 +188,16 @@ $ sudo apt-get install python-rosinstall python-rosinstall-generator python-wsto
 ### 1.2 One time Gazebo setup
 Check the version of gazebo installed on your system using a terminal:
 ```sh
-$ gazebo --version
+gazebo --version
 ```
 
 To run projects from this repository you need version 7.7.0+
 If your gazebo version is not 7.7.0+, perform the update as follows:
 ```sh
-$ sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-$ wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
-$ sudo apt-get update
-$ sudo apt-get install gazebo7
+sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install gazebo7
 ```
 
 Gazebo 7 might have some problems in-terms of crashing while running your package.  So you might want to install the latest version of gazebos which are gazebo 8 and gazebo 9.  However, you might encounter the following errors while trying to install gazebo 8 or gazebo 9.
@@ -278,7 +278,7 @@ Now that we have succesfullly installed the dependencies, let's try installing e
 ```sh
 $ sudo apt-get clean
 $ sudo apt-get update
-$ sudo apt-get install gazebo9
+$ sudo apt-get install gazebo8
 	Reading package lists... Done
 	Building dependency tree       
 	Reading state information... Done
@@ -289,8 +289,48 @@ This time the installation was succesful!
 
 Once again check if the correct version was installed.
 ```sh
-$ gazebo --version
+gazebo --version
 ```
+If you get CMake error for gazebo9 while compiling the package through command `catkin_make`, then remove gazebo9 and then follow the steps below to install gazebo8.
+
+
+Remove gazebo:
+```
+sudo apt-get remove ros-kinetic-gazebo*
+sudo apt-get remove gazebo9
+```
+Go to ROS Kinetic install guide and install only the core of ROS, i.e.
+```sh
+sudo apt-get upgrade
+sudo apt-get install ros-kinetic-ros-base
+sudo apt-get install ros-kinetic-catkin
+```
+Further ROS packages can be addedd manually later. Follow Gazebo 8 install guide to install Gazebo8 alongside ROS Kinetic. Check if launching roscore and gazebo on a terminal, the correct versions have been installed.
+
+Install rviz simulation tool
+```sh
+sudo apt-get install rviz
+```
+
+Install other ROS packages
+```sh
+sudo apt-get install ros-kinetic-controller-manager ros-kinetic-joint-state-controller ros-kinetic-joint-trajectory-controller ros-kinetic-rqt ros-kinetic-rqt-controller-manager ros-kinetic-rqt-joint-trajectory-controller ros-kinetic-ros-control ros-kinetic-rqt-gui 
+```
+If it asks for qt5 packages, try installing qt5 from here Qt5
+```sh
+sudo apt-get install ros-kinetic-rqt-plot ros-kinetic-rqt-graph ros-kinetic-rqt-rviz ros-kinetic-rqt-tf-tree 
+```
+
+Install other dependencies
+```sh
+sudo apt-get install ros-kinetic-gazebo8-ros ros-kinetic-kdl-conversions ros-kinetic-kdl-parser ros-kinetic-forward-command-controller ros-kinetic-tf-conversions ros-kinetic-xacro ros-kinetic-joint-state-publisher ros-kinetic-robot-state-publisher 
+```
+
+Check gazebo version
+```sh
+gazebo --version
+```
+
 
 ### 1.3 Create ROS Workspace and Compile ROS Package
 
