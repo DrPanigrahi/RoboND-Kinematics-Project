@@ -70,8 +70,8 @@ Next we will perform kinematic analysis of the robot and derive equations for in
 
 * Setup ROS Workspace.
 * Download or clone the [project repository](https://github.com/udacity/RoboND-Kinematics-Project) into the src directory of your ROS Workspace.
-* Perform forward and inverse kinematic analysis for the robot. Use the `IK_debug.py` to perform initial analysis on the forward kinematics.
-* Fill in the `IK_server.py` with Forward Kinematics (FK) and Inverse Kinematics (IK) code. 
+* Perform forward and inverse kinematic analysis for the robot. Use the `IK_debug.py` to perform initial analysis on the forward kinematics before getting into ROS environment.
+* Use the implementations from `IK_debug.py` in `IK_server.py` to run the simulation in ROS/rviz/Gazebo environment. 
 
 **Forward Kinematics**
 
@@ -200,7 +200,94 @@ $ sudo apt-get update
 $ sudo apt-get install gazebo7
 ```
 
-Once again check if the correct version was installed:
+Gazebo 7 might have some problems in-terms of crashing while running your package.  So you might want to install the latest version of gazebos which are gazebo 8 and gazebo 9.  However, you might encounter the following errors while trying to install gazebo 8 or gazebo 9.
+```sh
+$ sudo apt-get install gazebo9
+	Reading package lists... Done
+	Building dependency tree       
+	Reading state information... Done
+	Some packages could not be installed. This may mean that you have
+	requested an impossible situation or if you are using the unstable
+	distribution that some required packages have not yet been created
+	or been moved out of Incoming.
+	The following information may help to resolve the situation:
+
+	The following packages have unmet dependencies:
+	 gazebo9 : Depends: libgazebo9 (= 9.0.0-1~xenial) but it is not going to be installed
+		   Depends: libsdformat6 but it is not going to be installed
+		   Depends: gazebo9-common (= 9.0.0-1~xenial) but it is not going to be installed
+		   Recommends: gazebo9-plugin-base
+	E: Unable to correct problems, you have held broken packages.
+$ sudo apt-get install gazebo8
+	Reading package lists... Done
+	Building dependency tree       
+	Reading state information... Done
+	Some packages could not be installed. This may mean that you have
+	requested an impossible situation or if you are using the unstable
+	distribution that some required packages have not yet been created
+	or been moved out of Incoming.
+	The following information may help to resolve the situation:
+
+	The following packages have unmet dependencies:
+	 gazebo8 : Depends: libgazebo8 (= 8.4.0-1~xenial) but it is not going to be installed
+		   Depends: libsdformat5 but it is not going to be installed
+		   Recommends: gazebo8-plugin-base
+	E: Unable to correct problems, you have held broken packages.
+```
+
+In this case try to install the dependencies as shown in the error message:
+
+```sh
+$ sudo apt-get install libsdformat5
+	Reading package lists... Done
+	Building dependency tree       
+	Reading state information... Done
+	Some packages could not be installed. This may mean that you have
+	requested an impossible situation or if you are using the unstable
+	distribution that some required packages have not yet been created
+	or been moved out of Incoming.
+	The following information may help to resolve the situation:
+
+	The following packages have unmet dependencies:
+	 libsdformat5 : Depends: libignition-math3 but it is not going to be installed
+			Breaks: libsdformat4 but 4.4.0-1~xenial is to be installed
+	E: Unable to correct problems, you have held broken packages.
+```
+
+We are still getting dependency errors.  So let's install the suggested dependency libignition-math3.
+```sh
+$ sudo apt-get install libignition-math3
+	...
+	...
+	(Reading database ... 328665 files and directories currently installed.)
+	Preparing to unpack .../sdformat-sdf_6.0.0-1~xenial_all.deb ...
+	Unpacking sdformat-sdf (6.0.0-1~xenial) over (4.0.0-1ubuntu2) ...
+	Preparing to unpack .../gazebo7-common_7.12.0-1~xenial_all.deb ...
+	Unpacking gazebo7-common (7.12.0-1~xenial) over (7.0.0+dfsg-2) ...
+	Selecting previously unselected package libignition-math3:amd64.
+	Preparing to unpack .../libignition-math3_3.3.0-1~xenial_amd64.deb ...
+	Unpacking libignition-math3:amd64 (3.3.0-1~xenial) ...
+	Processing triggers for libc-bin (2.23-0ubuntu10) ...
+	Setting up sdformat-sdf (6.0.0-1~xenial) ...
+	Setting up gazebo7-common (7.12.0-1~xenial) ...
+	Setting up libignition-math3:amd64 (3.3.0-1~xenial) ...
+	Processing triggers for libc-bin (2.23-0ubuntu10) ...
+```
+
+Now that we have succesfullly installed the dependencies, let's try installing either gazebo 8 or gazebo 9.
+```sh
+$ sudo apt-get clean
+$ sudo apt-get update
+$ sudo apt-get install gazebo9
+	Reading package lists... Done
+	Building dependency tree       
+	Reading state information... Done
+	...
+	...
+```
+This time the installation was succesful!
+
+Once again check if the correct version was installed.
 ```sh
 $ gazebo --version
 ```
