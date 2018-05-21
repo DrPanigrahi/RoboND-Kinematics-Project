@@ -200,24 +200,8 @@ sudo apt-get update
 sudo apt-get install gazebo7
 ```
 
-Gazebo 7 might have some problems in-terms of crashing while running your package.  So you might want to install the latest version of gazebos which are gazebo 8 and gazebo 9.  However, you might encounter the following errors while trying to install gazebo 8 or gazebo 9.
+Gazebo 7 might have some problems for example often crashing while running your package.  So you might want to install the latest version of gazebos which are gazebo 8 and gazebo 9.  However, you might encounter the following errors while trying to install gazebo 8.
 ```sh
-$ sudo apt-get install gazebo9
-	Reading package lists... Done
-	Building dependency tree       
-	Reading state information... Done
-	Some packages could not be installed. This may mean that you have
-	requested an impossible situation or if you are using the unstable
-	distribution that some required packages have not yet been created
-	or been moved out of Incoming.
-	The following information may help to resolve the situation:
-
-	The following packages have unmet dependencies:
-	 gazebo9 : Depends: libgazebo9 (= 9.0.0-1~xenial) but it is not going to be installed
-		   Depends: libsdformat6 but it is not going to be installed
-		   Depends: gazebo9-common (= 9.0.0-1~xenial) but it is not going to be installed
-		   Recommends: gazebo9-plugin-base
-	E: Unable to correct problems, you have held broken packages.
 $ sudo apt-get install gazebo8
 	Reading package lists... Done
 	Building dependency tree       
@@ -236,7 +220,6 @@ $ sudo apt-get install gazebo8
 ```
 
 In this case try to install the dependencies as shown in the error message:
-
 ```sh
 $ sudo apt-get install libsdformat5
 	Reading package lists... Done
@@ -274,7 +257,7 @@ $ sudo apt-get install libignition-math3
 	Processing triggers for libc-bin (2.23-0ubuntu10) ...
 ```
 
-Now that we have succesfullly installed the dependencies, let's try installing either gazebo 8 or gazebo 9.
+Now that we have succesfullly installed the dependencies, let's try installing gazebo 8.
 ```sh
 $ sudo apt-get clean
 $ sudo apt-get update
@@ -291,50 +274,7 @@ Once again check if the correct version was installed.
 ```sh
 gazebo --version
 ```
-If you get CMake error for gazebo9 while compiling the package through command `catkin_make`, then remove gazebo9 and then follow the steps below to install gazebo8.
 
-
-Remove gazebo:
-```
-sudo apt-get remove ros-kinetic-gazebo*
-sudo apt-get remove gazebo9
-```
-Go to ROS Kinetic install guide and install only the core of ROS, i.e.
-```sh
-sudo apt-get upgrade
-sudo apt-get install ros-kinetic-ros-base
-sudo apt-get install ros-kinetic-catkin
-```
-Further ROS packages can be addedd manually later. Follow Gazebo 8 install guide to install Gazebo8 alongside ROS Kinetic. Check if launching roscore and gazebo on a terminal, the correct versions have been installed.
-
-Install rviz simulation tool
-```sh
-sudo apt-get install rviz
-```
-
-Install other ROS packages
-```sh
-sudo apt-get install ros-kinetic-controller-manager ros-kinetic-joint-state-controller ros-kinetic-joint-trajectory-controller ros-kinetic-rqt ros-kinetic-rqt-controller-manager ros-kinetic-rqt-joint-trajectory-controller ros-kinetic-ros-control ros-kinetic-rqt-gui 
-```
-If it asks for qt5 packages, try installing qt5 from here Qt5
-```sh
-sudo apt-get install ros-kinetic-rqt-plot ros-kinetic-rqt-graph ros-kinetic-rqt-rviz ros-kinetic-rqt-tf-tree 
-```
-
-Install other dependencies
-```sh
-sudo apt-get install ros-kinetic-gazebo8-ros ros-kinetic-kdl-conversions ros-kinetic-kdl-parser ros-kinetic-forward-command-controller ros-kinetic-tf-conversions ros-kinetic-xacro ros-kinetic-joint-state-publisher ros-kinetic-robot-state-publisher 
-```
-
-Check gazebo version
-```sh
-gazebo --version
-```
-After this run the following:
-```sh
-$ cd ~/catkin_ws
-$ catkin_make
-```
 However, if you get errors such as 
 ```sh
 CMake Error at /opt/ros/kinetic/share/catkin/cmake/catkinConfig.cmake:83 (find_package):
@@ -350,26 +290,12 @@ Install bootstrap dependencies (Ubuntu):
 ```sh
 $ sudo apt-get install python-rosdep python-rosinstall-generator python-wstool python-rosinstall build-essential
 ```
-Initialize rosdep
+Initialize rosdep and resolve dependencies
 ```sh
 $ sudo rosdep init
 $ rosdep update
-```
-Build the catkin Packages (ROS, rqt, rviz, and robot-generic libraries)
-```sh
-$ cd ~/catkin_ws
-$ rosinstall_generator desktop --rosdistro kinetic --deps --wet-only --tar > kinetic-desktop-wet.rosinstall
-$ wstool init -j8 src kinetic-desktop-wet.rosinstall
-```
-Resolve dependencies
-```sh
 $ rosdep install --from-paths src --ignore-src --rosdistro kinetic -y
 ```
-Build the catkin Workspace
-```sh
-$ ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
-```
-
 
 ### 1.3 Create ROS Workspace and Compile ROS Package
 
